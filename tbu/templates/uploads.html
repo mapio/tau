@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block extrahead %}
+<link href="{{ url_for('static', filename = 'filepond.css') }}" rel="stylesheet">
+<script src="{{ url_for('static', filename = 'filepond-plugin-file-validate-type.js') }}"></script>
+<script src="{{ url_for('static', filename = 'filepond.js') }}"></script>
+{% endblock %}
+
+
+{% block content %}
+<h1>{% block title %}Upload{% endblock %}</h1>
+
+<p> Invia i file…</p>
+
+<input
+    type="file"
+    class="filepond"
+    name="file"
+    multiple
+    accept=".java"
+    data-server="/upload"
+    data-instant-upload="true"
+    data-allow-revert="false"
+    data-max-file-size="3MB"
+    data-max-files="3"
+/>
+
+<script src="{{ url_for('static', filename = 'main.js') }}"></script>
+
+{% endblock %}
