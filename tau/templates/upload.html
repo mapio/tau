@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block extrahead %}
+<link href="{{ url_for('static', filename = 'filepond.css') }}" rel="stylesheet">
+<script src="{{ url_for('static', filename = 'filepond-plugin-file-validate-type.js') }}"></script>
+<script src="{{ url_for('static', filename = 'filepond.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<h1>{% block title %}Upload your files{% endblock %}</h1>
+
+{% if status == 'OK' %}
+<p> Dear <samp>{{email}}</samp> please upload your <samp>.java</samp> files by dragging them in the area below…</p>
+<input
+    type = "file"
+    class = "filepond"
+    name = "file"
+    multiple accept = ".java"
+    data-server = "/upload"
+    data-instant-upload = "true"
+    data-allow-revert = "false"
+    data-max-file-size = "3MB"
+    data-max-files = "10"
+/>
+<script src="{{ url_for('static', filename = 'main.js') }}"></script>
+{% else %}
+{% if status == 'MISSING_TOKEN' %}
+<div class="pure-alert-error pure-alert">
+    The <em>token</em> is <strong>missing</strong> in your URL, please <a href="{{ url_for('index') }}">request one</a>.
+</div>
+{% elif status == 'EXPIRED_TOKEN' %}
+<div class="pure-alert-warning pure-alert">
+    The <em>token</em> in your URL is <strong>expired</strong>; please <a href="{{ url_for('index') }}">get
+    a valid URL</a> and try again, or contact the service administrator
+    if the problem persists.
+</div>
+{% elif status == 'UNREGISTERED_UID' %}
+<div class="pure-alert-warning pure-alert">
+    The <em>token</em> in your URL corresponds to an <strong>unregistered</strong> <em>user id </em>;
+    please <a href="{{ url_for('index') }}">get a valid URL</a> and try again, or contact the service administrator
+    if the problem persists.
+</div>
+{% elif status == 'INVALID_TOKEN' %}
+<div class="pure-alert-error pure-alert">
+    The <em>token</em> in your URL is <strong>invalid</strong>; please check the URL,
+    or <a href="{{ url_for('index') }}">get a valid one</a> and try again, or contact the service administrator
+    if the problem persists.
+</div>
+{% endif %}
+{% endif %}
+
+{% endblock %}
