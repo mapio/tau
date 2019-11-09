@@ -2,6 +2,7 @@ from csv import reader
 from pathlib import Path
 from smtplib import SMTPException
 
+import click
 from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
 from flask import Flask, flash, request, redirect, render_template, send_from_directory, url_for
 from flask_mail import Mail, Message
@@ -22,6 +23,11 @@ UID2MAIL = dict(reader(
 )
 
 Path(app.instance_path).mkdir(exist_ok = True)
+
+@app.cli.command("get-url")
+@click.argument("uid")
+def get_url(uid):
+    print(USTS.dumps(uid))
 
 @app.route('/uid2mail')
 def uid2mail():
@@ -75,7 +81,9 @@ def upload(token = None):
                 status = 'EXPIRED_TOKEN'
             except BadSignature:
                 status = 'INVALID_TOKEN'
-
+            else:
+                status = 'OK'
+                email = UID2MAIL[uid]
     else:
 
         # check if the post request has the file part
