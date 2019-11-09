@@ -61,7 +61,12 @@ def index():
             else:
                 token = USTS.dumps(uid)
                 try:
-                    msg = Message('Your token is: {}'.format(token), recipients = [email])
+                    msg = Message(
+                        subject = '[TAU] Your upload URL',
+                        recipients = [email],
+                        body = 'Your upload URL is: {}{}{}'.format(request.url_root, url_for('upload'), token),
+                        html = 'Here is your <a href="{}{}{}">upload URL</a>'.format(request.url_root, url_for('upload'), token),
+                    )
                     mail.send(msg)
                     status = 'OK'
                 except SMTPException:
