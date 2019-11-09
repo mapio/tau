@@ -8,13 +8,11 @@
 
 
 {% block content %}
-<h1>{% block title %}Upload{% endblock %}</h1>
+<h1>{% block title %}Upload your files{% endblock %}</h1>
 
-{% if error %}
-{{error}}
-{% else %}
+{% if status == 'OK' %}
 
-<p> Gentile {{uid}} Invia i file…</p>
+<p> Dear <samp>{{email}}</samp> please upload your files by dragging them in the area below</p>
 
 <input
     type="file"

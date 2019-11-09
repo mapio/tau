@@ -2,14 +2,40 @@
 
 {% block content %}
 
-<h1>{% block title %}Register{% endblock %}</h1>
+<h1>{% block title %}Request upload URL{% endblock %}</h1>
 
-<p> Richiedi il token…</p>
+{% if status == 'OK' %}
+    <div class="pure-alert-success pure-alert">
+        You should shortly receive the upload URL to your email address: <samp>{{email}}</samp><div class=""></div>
+        If you don't get any email in few minutes, please try again or contact the service administrator if
+        the problem persists.
+    </div>
+{% else %}
+    {% if status == 'MISSING_UID' %}
+        <div class="pure-alert-error pure-alert">
+            The <em>used id</em> is missing, please enter it and try again.
+        </div>
+    {% elif status == 'UNREGISTERED_UID' %}
+        <div class="pure-alert-warning pure-alert">
+            The <em>user id</em> you eneted is not registered; please check it
+            and enter it again, or contact the service administrator if the
+            problem persists.
+        </div>
+    {% elif status == 'SEND_ERROR' %}
+        <div class="pure-alert-error pure-alert">
+            The server encountered an error sending an email to <samp>{{email}}</samp>;
+            please try again in a few minutes, or contact the service administrator if
+            the problem persists.
+        </div>
+    {% else %}
+        <p>Please insert your <em>user id</em> to request the token.</p>
+    {% endif %}
+    <form class="pure-form" method="POST">
+        <fieldset>
+            <input type="text" name="uid" class="pure-input-1-1" placeholder="user id" required>
+            <button type="submit" class="pure-button-secondary pure-button">Send me the token!</button>
+        </fieldset>
+    </form>
+{% endif %}
 
-<form class="pure-form" method="POST">
-    <fieldset>
-        <input type="text" name="uid" class="pure-input-1-1" placeholder="Matricola">
-        <button type="submit" class="button-secondary pure-button">Invia il token</button>
-    </fieldset>
-</form>
 {% endblock %}
