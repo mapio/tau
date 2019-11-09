@@ -61,8 +61,8 @@ def index():
             else:
                 token = USTS.dumps(uid)
                 try:
-                    msg = Message('Your token is: {}'.format(token), recipients = ['massimno.santini@gmail.com'])
-                    #mail.send(msg)
+                    msg = Message('Your token is: {}'.format(token), recipients = [email])
+                    mail.send(msg)
                     status = 'OK'
                 except SMTPException:
                     status = 'SEND_ERROR'
