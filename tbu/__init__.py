@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
 from flask import Flask, flash, request, redirect, render_template, send_from_directory, url_for
 from werkzeug.utils import secure_filename
 
@@ -10,11 +11,16 @@ app.config.from_mapping(
 )
 app.config.from_pyfile('config.py', silent = True)
 
+USTS = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+
 Path(app.instance_path).mkdir(exist_ok = True)
 
-@app.route("/")
+@app.route("/", methods=['GET', 'POST'])
 def home():
-    return render_template('reqtoken.html')
+    if request.method == 'GET':
+        return render_template('reqtoken.html')
+    else:
+        return USTS.dumps(request.form['uid'])
 
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 def allowed_file(filename):
@@ -22,10 +28,25 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
+@app.route('/upload/', methods=['GET'])
+@app.route('/upload/<string:token>', methods=['GET', 'POST'])
+def upload_file(token = None):
 
-@app.route('/upload', methods=['GET', 'POST'])
-def upload_file():
-    if request.method == 'POST':
+    if request.method == 'GET':
+        error = None
+        uid = None
+        if not token:
+            error = 'MISSING'
+        else:
+            try:
+                uid = USTS.loads(token, max_age = 24 * 60 * 60 * 5)
+            except SignatureExpired:
+                error = 'EXPIRED'
+            except BadSignature:
+                error = 'INVALID'
+        return render_template('uploads.html', uid = uid, error = error)
+
+    elif request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
             flash('No file part')
@@ -41,4 +62,3 @@ def upload_file():
             file.save(str(Path(app.config['UPLOAD_FOLDER']) / filename))
             return 'ok'
 
-    return render_template('uploads.html')

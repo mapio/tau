@@ -10,7 +10,11 @@
 {% block content %}
 <h1>{% block title %}Upload{% endblock %}</h1>
 
-<p> Invia i file…</p>
+{% if error %}
+{{error}}
+{% else %}
+
+<p> Gentile {{uid}} Invia i file…</p>
 
 <input
     type="file"
@@ -26,5 +30,6 @@
 />
 
 <script src="{{ url_for('static', filename = 'main.js') }}"></script>
+{% endif %}
 
 {% endblock %}
