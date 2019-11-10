@@ -1,0 +1,11 @@
+Dear user,
+    you've requested an upload URL at {{url_root}} for user id {{uid}},
+your url is
+
+    {{upload_url}}
+
+please follow the above link to send your files. If haven't requested
+any URL, please ignore this message.
+
+
+

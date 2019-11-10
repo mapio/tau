@@ -64,8 +64,8 @@ def index():
                     msg = Message(
                         subject = '[TAU] Your upload URL',
                         recipients = [email],
-                        body = 'Your upload URL is: {}{}{}'.format(request.url_root, url_for('upload'), token),
-                        html = 'Here is your <a href="{}{}{}">upload URL</a>'.format(request.url_root, url_for('upload'), token),
+                        body = render_template('email.txt', uid = uid, upload_url = '{}{}{}'.format(request.url_root, url_for('upload'), token)),
+                        html = render_template('email.html', uid = uid, upload_url = '{}{}{}'.format(request.url_root, url_for('upload'), token))
                     )
                     mail.send(msg)
                     status = 'OK'
