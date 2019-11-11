@@ -33,3 +33,7 @@ The upload button (or link) contains a *token* that is cryptographically signed
 and timestamped, so that only legitimate students (for the configured timeframe)
 will be able to upload files. The uploaded assignments will be stored in a
 separate folder for every student.
+
+## Configuring the system
+
+It's just few hundreds lines of code, so presently everything (except of course for the list of *user id*s and *email*s) is hardwired. This is just a proof of concept… it should be easy to adapt to one's needs.
