@@ -61,11 +61,12 @@ def index():
             else:
                 token = USTS.dumps(uid)
                 try:
+                    upload_url = (request.url_root[:-1] if request.url_root[-1] == '/' else request.url_root) + url_for('upload', token = token)
                     msg = Message(
                         subject = '[TAU] Your upload URL',
                         recipients = [email],
-                        body = render_template('email.txt', uid = uid, upload_url = '{}{}{}'.format(request.url_root, url_for('upload'), token), url_root = request.url_root),
-                        html = render_template('email.html', uid = uid, upload_url = '{}{}{}'.format(request.url_root, url_for('upload'), token), url_root = request.url_root)
+                        body = render_template('email.txt', uid = uid, upload_url = upload_url, url_root = request.url_root),
+                        html = render_template('email.html', uid = uid, upload_url = upload_url, url_root = request.url_root)
                     )
                     mail.send(msg)
                     status = 'OK'
