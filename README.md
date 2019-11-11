@@ -11,20 +11,21 @@ authentication).
 
 First of all one configures the service with a list of *user id*s (i.e. badge
 numbers) and corresponding *email*s; then instruct the students to request their
-upload URL by entering their *user id* on the service page
+upload URL by entering their (public) *user id* on the service page
 
 <img alt="request" src="screenshots/request.png" width="320px">
 
-if it corresponds to a registered student, the system will acknowledge it
+if it corresponds to a registered student, the system will acknowledges it
 
 <img alt="acknowledge" src="screenshots/acknowledge.png" width="320px">
 
-and send an email to the student, containing an *action* button (or text link)
+and sends an email to the student, containing an *action* button (or text link)
 to submit the files
 
 <img alt="email" src="screenshots/email.png" width="320px">
 
-finally, the students uploads his solutions
+finally, the student (accessing their emails with the suitable credentials)
+uploads his solutions
 
 <img alt="upload" src="screenshots/upload.png" width="320px">
 
